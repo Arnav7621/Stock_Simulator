@@ -5,6 +5,8 @@ import subprocess
 import os
 
 PORT = 8080
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SIMULATOR_PATH = os.path.join(BASE_DIR, "stock_simulator.exe")
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_OPTIONS(self):
@@ -29,7 +31,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         elif self.path.startswith('/api/data/'):
             ticker = self.path.split('/')[-1]
             try:
-                with open(f"data/{ticker}.csv", "r") as f:
+                with open(os.path.join(BASE_DIR, "data", f"{ticker}.csv"), "r") as f:
                     lines = f.readlines()[1:]
                     dates = []
                     prices = []
@@ -63,8 +65,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # Run C++ Simulator
             try:
                 result = subprocess.run(
-                    ["stock_simulator.exe", ticker, cap, shortWindow, longWindow],
-                    capture_output=True, text=True, check=True
+                    [SIMULATOR_PATH, ticker, cap, shortWindow, longWindow],
+                    capture_output=True, text=True, check=True, cwd=BASE_DIR
                 )
                 self.wfile.write(result.stdout.encode())
             except subprocess.CalledProcessError as e:
