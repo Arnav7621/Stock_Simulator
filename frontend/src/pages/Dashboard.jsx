@@ -43,7 +43,7 @@ export default function Dashboard() {
           <Activity size={24} />
         </div>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">StockSim</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-white">StockOp</h1>
           <p className="text-sm text-muted">Algorithmic Trading Simulator</p>
         </div>
       </header>
